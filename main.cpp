@@ -72,7 +72,7 @@ void Add(char* numb1, char* numb2)
     if (carry == 1)
     {
         score[lastDigit + 1] = '1';
-        score[lastDigit + 2] = NULL;
+        score[lastDigit + 2] = NULL;				// create string
     }
     else
         score[lastDigit + 1] = NULL;
