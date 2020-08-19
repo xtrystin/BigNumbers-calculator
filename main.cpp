@@ -1,9 +1,16 @@
 #include <iostream>
 
-#define SIZE 4090   // 100 000
+#define TEST 0          // 0 run normally   1 Add()   2 Sub()
+#define SIZE 4090   // 100 000 // max 4090 digits
 using namespace std;
 
-
+void menu()
+{
+    cout << endl;
+    cout << "Operation: " << endl;
+    cout << "!. Add" << endl;
+    cout << "2. Subtract" << endl;
+}
 
 
 int FindLastDigit(char* number)
@@ -88,6 +95,71 @@ void Add(char* numb1, char* numb2)
 
 
 
+
+
+void CheckZeros(char* score, int nullPosition)
+{
+    int i = nullPosition - 1;
+    while (score[i] == '0')
+    {
+        score[i] = NULL;
+        score[i + 1] = '0';
+        i--;
+    }
+
+}
+
+void Sub(char* numb1, char* numb2)
+{
+    int a;
+    int lastDigit1 = FindLastDigit(numb1) - 1;                                  // last digit in reversed number  (array position)
+    int lastDigit2 = FindLastDigit(numb2) - 1;
+    int lastDigit = (lastDigit1 > lastDigit2) ? lastDigit1 : lastDigit2;
+    cout << endl << "Your longest number length: " << lastDigit + 1 << endl;
+
+    char score[SIZE];
+    for (int i = 0; i < SIZE; i++)
+        score[i] = '0';
+
+    numb1[lastDigit1 + 1] = '0';      // change string NULL to '0'
+    numb2[lastDigit2 + 1] = '0';
+
+
+
+    for (int i = 0; i <= lastDigit; i++)
+    {
+        a = (numb1[i] - '0') - (numb2[i] - '0');
+                                                                                 //cout << numb1[i]  << "   " << numb2[i]  << endl;
+        if (a < 0)
+        {
+            a += 10;
+            
+            int k = 1;
+            while (numb1[i + k] <= 0)       // search for BORROW
+            {
+                numb1[i + k] = '9';
+                k++;
+            }
+            numb1[i + k]--;
+
+        }
+                                                                                // cout << a << " ";
+        score[i] = (char)(a + '0');                // still reversed
+                                                                                // cout << score[i] << endl;
+    }
+
+    score[lastDigit + 1] = NULL;     
+
+    CheckZeros(score, lastDigit+1);                          // check if there are zeros before NULL   (number is reversed, example: 100 NULL -> 001 NULL)
+    Reverse(score);                        //                                                                      ^reversed    ^normal 
+    cout << "Score: \n" << score << endl;
+
+}
+
+
+
+
+
 int main()
 {
     char numb1[SIZE];
@@ -99,17 +171,50 @@ int main()
         numb2[i] = '0';
 
     }
+
     cout << "HUGE NUMBERS CALCULATOR" << endl;
-    cout << "Maximum number's lenght: " << SIZE << " digits!" << endl <<endl;
+    cout << "Maximum number's lenght: " << SIZE << " digits!" << endl << endl;
     cout << "Number 1:  ";
     cin >> numb1;
     cout << "Number 2:  ";
     cin >> numb2;
-    
 
     Reverse(numb1);
     Reverse(numb2);
+
+#if (TEST == 0)
+
+    menu();
+    int choice;
+    cout << "Choose option: ";
+    cin >> choice;
+
+
+    
+    switch (choice)
+    {
+    case 1:
+       
+        Add(numb1, numb2);
+        break;
+    case 2:
+        Sub(numb1, numb2);      //todo  message that numb1 must be >= numb2 !!!!!!!!!!   &&   numb1, numb2 > 0
+        break;
+    default:
+        break;
+    }
+
+#endif // (TEST == 0)    
+
+#if (TEST == 1)
     Add(numb1, numb2);
+#endif // (TEST == 1)
+
+#if (TEST == 2)
+    Sub(numb1, numb2);
+#endif // (TEST == 2)
+
+    
 
    
 
