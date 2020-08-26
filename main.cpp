@@ -1,5 +1,5 @@
 #include <iostream>
-#define TEST 3          // 0 run normally   1 Add()   2 Sub()   3 Mul()   4 Div()
+#define TEST 0          // 0 menu   1 Add()   2 Sub()   3 Mul()   4 Div()
 #define SIZE 4090   // 100 000 // max 4090 digits because of std::cin??
 using namespace std;
 
@@ -10,6 +10,8 @@ void menu()
     cout << "!. Add" << endl;
     cout << "2. Subtract" << endl;
     cout << "3. Multiply" << endl;
+    cout << "4. Divide" << endl;
+
 }
 
 
@@ -286,7 +288,7 @@ void Mul(char* numb1, char* numb2)          // 7h           // todo:  33 * 4  77
     int lastDigit2 = FindLastDigit(numb2) - 1;                                  
     int lastDigit = (lastDigit1 > lastDigit2) ? lastDigit1 : lastDigit2;
     cout << endl << "Your longest number length: " << lastDigit + 1 << endl;    // number length = lastDigit+1
-
+    //cout << lastDigit1 << " " << lastDigit2 << endl;
     char scoreM[SIZE];
     for (int i = 0; i < SIZE; i++)
         scoreM[i] = '0';
@@ -299,7 +301,7 @@ void Mul(char* numb1, char* numb2)          // 7h           // todo:  33 * 4  77
     for (int i = 0; i < SIZE; i++)
         tmp[i] = '0';
 
-
+   
     numb1[lastDigit1 + 1] = '0';      // change string NULL to '0'
     numb2[lastDigit2 + 1] = '0';
 
@@ -319,23 +321,31 @@ void Mul(char* numb1, char* numb2)          // 7h           // todo:  33 * 4  77
             else
                 carry = 0;
 
-
             tmp[j+i] = (char)(a + '0');     // +i  -> next numb2 
-            //cout << tmp[i] << endl;
+            //cout << tmp[j+i] << endl;
 
 
             if (j == lastDigit1 && carry > 0)               // carry  on last digit -> create new digit
             {
+               // cout << tmp[2] << endl;
+                if (tmp[lastDigit1 + 1 + i] == NULL)        //if its first time is can be NULL  because of else  tmp[lastDigit1 + 1 + i] = NULL;
+                {
+                    tmp[lastDigit1 + 1 + i] = (char)(carry + '0');
+                    tmp[lastDigit1 + 2 + i] = NULL;
+                }
+                else
+                {
+                    tmp[lastDigit1 + 1 + i] = (char)(int(tmp[lastDigit1 + 1 + i] - '0' + carry) + '0');      //tmp -> number is char   carry -> number is int
+                    tmp[lastDigit1 + 2 + i] = NULL;			                                            // create string
+
+                }
                
-               tmp[lastDigit1 + 1 + i] = (char) ( int( tmp[lastDigit1 + 1 + i] - '0' + carry ) + '0' );      //tmp -> number is char   carry -> number is int
-               tmp[lastDigit1 + 2 + i] = NULL;			                                            // create string
-                
                 
             }
             else
                 tmp[lastDigit1 + 1 + i] = NULL;
 
-
+            //cout << j << " " << tmp[2] << endl;
         }
        // cout << tmp[0] << " " << tmp[1] << " " <<tmp[2] << endl;
         string s;
@@ -347,7 +357,7 @@ void Mul(char* numb1, char* numb2)          // 7h           // todo:  33 * 4  77
            // cout << scoreM[i] << endl;
         }
         scoreM[s.size()] = NULL;            //create string
-       // cout <<scoreM <<endl <<endl;
+       // cout <<scoreM <<endl;
 
 
         for (int i = 0; i < SIZE; i++)          // reset tmp
@@ -490,8 +500,17 @@ string MulD(char* numb1, char* numb2)          // Mul for Div()
             if (j == lastDigit1 && carry > 0)               // carry  on last digit -> create new digit                    1110<-------this 0
             {
 
-                tmp[lastDigit1 + 1 + i] = (char)(int(tmp[lastDigit1 + 1 + i] - '0' + carry) + '0');      //tmp -> number is char   carry -> number is int
-                tmp[lastDigit1 + 2 + i] = NULL;				                                     // create string
+                if (tmp[lastDigit1 + 1 + i] == NULL)        //if its first time is can be NULL  because of else  tmp[lastDigit1 + 1 + i] = NULL;
+                {
+                    tmp[lastDigit1 + 1 + i] = (char)(carry + '0');
+                    tmp[lastDigit1 + 2 + i] = NULL;
+                }
+                else
+                {
+                    tmp[lastDigit1 + 1 + i] = (char)(int(tmp[lastDigit1 + 1 + i] - '0' + carry) + '0');      //tmp -> number is char   carry -> number is int
+                    tmp[lastDigit1 + 2 + i] = NULL;			                                            // create string
+
+                }		                                     // create string
 
 
             }
@@ -560,11 +579,11 @@ void Div(char* numb1, char* numb2)      //   numb1 / numb2           numb1 numb2
             // cout << scoreM[i] << endl;
         }
         x[s.size()] = NULL;                                 //x IS reversed
-        cout << "x: " << x << endl;
-        cout << "Reversed numb2: " << numb2 << endl;
+       // cout << "x(reversed): " << x << endl;
+       // cout << "numb2(reversed): " << numb2 << endl;
         string MulScore;
         MulScore = MulD(numb2, x);                           // MulScore NOT reversed
-        cout << "Mul score: " << MulScore << endl;
+      //  cout << "Mul score: " << MulScore << endl;
         if (CompareGreaterThan(MulScore, numb1))
         {
             Reverse(x);
@@ -587,22 +606,8 @@ void Div(char* numb1, char* numb2)      //   numb1 / numb2           numb1 numb2
      }
    
 
-
-  
-
-
-
-
-
-
-
-
-
-
-    
-    
-   
 }
+
 
 
 
@@ -650,6 +655,12 @@ int main()
         break;
     case 3:
         Mul(numb1, numb2);
+        break;
+    case 4:
+        cout << "Computing..." << endl;
+        cout << "If numbers are long it can take a few minutes" << endl;
+        Reverse(numb1);                             //reverse reversion
+        Div(numb1, numb2);                          // score is down rounded
     default:
         break;
     }
@@ -671,9 +682,10 @@ int main()
 #if (TEST == 4)
     //Reverse(numb1);
     //Reverse(numb2);
-    cout << "Version: early Alpha" << endl;
-    Reverse(numb1);
-    Div(numb1, numb2);
+    cout << "Computing..." << endl;
+    cout << "If numbers are long it can take a few minutes" << endl;
+    Reverse(numb1);                             //reverse reversion
+    Div(numb1, numb2);                          // score is down rounded
 #endif // (TEST == 4)
 
     
