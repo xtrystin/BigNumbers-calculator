@@ -1,0 +1,34 @@
+Big numbers division
+------Algorithm------
+input: int numb1, int numb2
+score: int x
+
+numb1 / numb2 = x  | *numb2
+numb2 * x = numb1
+
+for x = 1, 2, 3, ..., +infinity					//check every possible x
+	if( numb2 * x == numb1 )
+		return x
+	else if( numb2 * x > numb1 )			
+		return x - 1						// if score is not integer -> score is down rounded
+	else
+		continue
+
+-------------------------
+-----using my functions solution-------
+
+x = 0;
+one = 1;
+string s;
+while(true)
+{
+	x = Add(x, one);
+	MulScore = Mul(numb2, x)
+	if( MulScore == numb1 )
+		return x;
+	else if( MulScore > numb1 )		
+		return Sub(x, one);					// if score is not integer -> score is down rounded
+	else
+		continue;
+}
+-----------------------------
