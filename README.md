@@ -7,6 +7,6 @@
 - Program supports unsigned numbers up to 4000 digits
 - Be careful with multiplication, score can not have more than 4000 digits!
 - Dividing long number by short number may take longer calculation time
-### ToDo
+### ToDo:
 - e notation
 - signed numbers support
