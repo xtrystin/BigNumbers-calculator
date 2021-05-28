@@ -10,3 +10,4 @@
 ### ToDo:
 - e notation
 - signed numbers support
+- real numbers (with comma , ) support
